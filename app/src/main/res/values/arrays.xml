@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mock_algorithm_names">
+        <item>DFS</item>
+        <item>BFS</item>
+        <item>Random</item>
+    </string-array>
+</resources>
