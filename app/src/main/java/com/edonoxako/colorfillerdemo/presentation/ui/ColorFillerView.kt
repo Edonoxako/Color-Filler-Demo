@@ -1,9 +1,11 @@
 package com.edonoxako.colorfillerdemo.presentation.ui
 
 import android.content.Context
+import android.graphics.Point
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.edonoxako.colorfillerdemo.R
+import com.edonoxako.colorfillerdemo.domain.AlgorithmName
 import com.edonoxako.colorfillerdemo.inflateSelf
 
 class ColorFillerView @JvmOverloads constructor(
@@ -18,4 +20,11 @@ class ColorFillerView @JvmOverloads constructor(
         orientation = VERTICAL
     }
 
+    var algorithmChangedListener: (algorithmName: AlgorithmName) -> Unit = {}
+
+    var tapListener: (tapPoint: Point) -> Unit = {}
+
+    fun addPoint(point: Point) {
+        TODO()
+    }
 }

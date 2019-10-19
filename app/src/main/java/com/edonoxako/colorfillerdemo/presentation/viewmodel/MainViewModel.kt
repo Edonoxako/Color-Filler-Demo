@@ -9,20 +9,7 @@ import io.reactivex.Flowable
 
 class MainViewModel : ViewModel() {
 
-    val points: LiveData<List<Point>>
-        get() = _points
-
-    private val _points = MutableLiveData<List<Point>>().apply {
-        value = listOf(
-            Point(10, 10),
-            Point(20, 20),
-            Point(30, 30),
-            Point(40, 40),
-            Point(50, 50)
-        )
-    }
-
-    fun getPointsStream(id: Int): LiveData<Point> {
+    fun algorithmOutput(algorithmName: AlgorithmName): LiveData<Point> {
         TODO()
     }
 
@@ -34,15 +21,11 @@ class MainViewModel : ViewModel() {
         TODO()
     }
 
-    fun updateAlgorithmSpeed() {
+    fun updateAlgorithmSpeed(percent: Int) {
         TODO()
     }
 
     fun start(startingPoint: Point) {
-        TODO()
-    }
-
-    fun selectAlgorithm(id: Int, algorithmName: AlgorithmName) {
         TODO()
     }
 }
