@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:parentTag="android.widget.LinearLayout"
-    tools:context=".MainActivity">
+    tools:context=".presentation.ui.MainActivity">
 
     <Spinner
         android:id="@+id/spinner_algorithm"

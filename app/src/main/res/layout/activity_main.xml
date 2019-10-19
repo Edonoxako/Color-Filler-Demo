@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.edonoxako.colorfillerdemo.ColorFillerView
+    <com.edonoxako.colorfillerdemo.presentation.ui.ColorFillerView
         android:id="@+id/filler_view_first"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.edonoxako.colorfillerdemo.ColorFillerView
+    <com.edonoxako.colorfillerdemo.presentation.ui.ColorFillerView
         android:id="@+id/filler_view_second"
         android:layout_width="match_parent"
         android:layout_height="0dp"

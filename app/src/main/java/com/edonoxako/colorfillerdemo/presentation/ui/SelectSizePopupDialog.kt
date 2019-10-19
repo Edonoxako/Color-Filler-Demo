@@ -1,10 +1,12 @@
-package com.edonoxako.colorfillerdemo
+package com.edonoxako.colorfillerdemo.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import com.edonoxako.colorfillerdemo.R
+import com.edonoxako.colorfillerdemo.showSoftKeyboard
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.view_size.*
 
@@ -15,7 +17,9 @@ class SelectSizePopupDialog : BottomSheetDialogFragment() {
         private const val TAG = "popup-select"
 
         fun show(fragmentManager: FragmentManager) {
-            SelectSizePopupDialog().show(fragmentManager, TAG)
+            SelectSizePopupDialog().show(fragmentManager,
+                TAG
+            )
         }
     }
 
