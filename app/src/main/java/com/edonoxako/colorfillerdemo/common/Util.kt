@@ -1,10 +1,14 @@
-package com.edonoxako.colorfillerdemo
+package com.edonoxako.colorfillerdemo.common
 
 import android.content.Context
+import android.graphics.Point
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
+import io.reactivex.Flowable
+import io.reactivex.disposables.Disposable
+import timber.log.Timber
 
 fun ViewGroup.inflateSelf(@LayoutRes layoutRes: Int) {
     View.inflate(context, layoutRes, this)
@@ -18,3 +22,16 @@ fun View.showSoftKeyboard() {
         }
     }
 }
+
+fun <T> Flowable<T>.subscribeLoggingError(handler: (T) -> Unit): Disposable {
+    return subscribe(handler::invoke, Timber::e)
+}
+
+val Point.right get() = Point(x, y.inc())
+val Point.left get() = Point(x, y.dec())
+val Point.top get() = Point(x.inc(), y)
+val Point.bot get() = Point(x.dec(), y)
+
+val Point.neighbourPoints get() = listOf(
+    top, right, bot, left
+)

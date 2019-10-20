@@ -1,4 +1,4 @@
-package com.edonoxako.colorfillerdemo.domain
+package com.edonoxako.colorfillerdemo.domain.model
 
 enum class AlgorithmName {
     DFS,

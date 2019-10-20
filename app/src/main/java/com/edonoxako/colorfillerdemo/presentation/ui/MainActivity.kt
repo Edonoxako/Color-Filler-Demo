@@ -3,11 +3,10 @@ package com.edonoxako.colorfillerdemo.presentation.ui
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import com.edonoxako.colorfillerdemo.R
-import com.edonoxako.colorfillerdemo.domain.AlgorithmName
+import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
 import com.edonoxako.colorfillerdemo.presentation.viewmodel.MainViewModel
 import com.jakewharton.rxbinding3.widget.changes
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,8 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         setUpSpeedSeekBar()
 
-        setUpFillerView(filler_view_first)
-        setUpFillerView(filler_view_second)
+        setUpFirstColorFillerView()
+        setUpSecondColorFillerView()
     }
 
     private fun setUpSelectSizeButton() {
@@ -47,17 +46,23 @@ class MainActivity : AppCompatActivity() {
             .subscribe(viewModel::updateAlgorithmSpeed)
     }
 
-    private fun setUpFillerView(colorFillerView: ColorFillerView) {
-        with(colorFillerView) {
-            algorithmChangedListener = { algorithmName -> listenToAlgorithmUpdates(algorithmName) }
+    private fun setUpFirstColorFillerView() {
+        with(filler_view_first) {
+            algorithmChangedListener = { algorithmName ->
+                viewModel.firstAlgorithmName = algorithmName
+            }
             tapListener = viewModel::start
+            viewModel.firstAlgorithmOutput.observe(this@MainActivity, this::addPoint)
         }
     }
 
-    private fun ColorFillerView.listenToAlgorithmUpdates(
-        algorithmName: AlgorithmName
-    ) {
-        viewModel.algorithmOutput(algorithmName)
-            .observe(this@MainActivity, this::addPoint)
+    private fun setUpSecondColorFillerView() {
+        with(filler_view_second) {
+            algorithmChangedListener = { algorithmName ->
+                viewModel.secondAlgorithmName = algorithmName
+            }
+            tapListener = viewModel::start
+            viewModel.secondAlgorithmOutput.observe(this@MainActivity, this::addPoint)
+        }
     }
 }

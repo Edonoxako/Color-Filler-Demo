@@ -5,8 +5,8 @@ import android.graphics.Point
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.edonoxako.colorfillerdemo.R
-import com.edonoxako.colorfillerdemo.domain.AlgorithmName
-import com.edonoxako.colorfillerdemo.inflateSelf
+import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
+import com.edonoxako.colorfillerdemo.common.inflateSelf
 
 class ColorFillerView @JvmOverloads constructor(
     context: Context,
