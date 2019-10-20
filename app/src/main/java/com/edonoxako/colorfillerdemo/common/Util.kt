@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
@@ -24,6 +25,10 @@ fun View.showSoftKeyboard() {
 }
 
 fun <T> Flowable<T>.subscribeLoggingError(handler: (T) -> Unit): Disposable {
+    return subscribe(handler::invoke, Timber::e)
+}
+
+fun <T> Single<T>.subscribeLoggingError(handler: (T) -> Unit): Disposable {
     return subscribe(handler::invoke, Timber::e)
 }
 

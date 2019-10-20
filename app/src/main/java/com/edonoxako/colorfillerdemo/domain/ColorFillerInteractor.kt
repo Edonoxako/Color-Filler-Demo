@@ -11,7 +11,7 @@ import io.reactivex.Single
 class ColorFillerInteractor(
     private val fillAlgorithmFactory: FillAlgorithmFactory,
     private val pointsRepository: PointsRepository,
-    private val pointsGenerator: PouintsGenerator
+    private val pointsGenerator: PointsGenerator
 ) {
 
     fun generatePoints(size: Size): Single<Map<Point, Boolean>> {

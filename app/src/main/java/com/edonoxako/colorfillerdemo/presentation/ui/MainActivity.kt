@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             }
             tapListener = viewModel::start
             viewModel.firstAlgorithmOutput.observe(this@MainActivity, this::addPoint)
+            viewModel.generatedPoints.observe(this@MainActivity, this::addAllPoints)
         }
     }
 
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
             tapListener = viewModel::start
             viewModel.secondAlgorithmOutput.observe(this@MainActivity, this::addPoint)
+            viewModel.generatedPoints.observe(this@MainActivity, this::addAllPoints)
         }
     }
 }

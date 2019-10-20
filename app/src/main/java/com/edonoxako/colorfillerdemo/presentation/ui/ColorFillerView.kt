@@ -27,4 +27,8 @@ class ColorFillerView @JvmOverloads constructor(
     fun addPoint(point: Point) {
         TODO()
     }
+
+    fun addAllPoints(points: Map<Point, Boolean>) {
+        TODO()
+    }
 }

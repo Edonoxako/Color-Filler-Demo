@@ -19,12 +19,16 @@ class MainViewModel(
         private val DEFAULT_SIZE = Size(100, 100)
     }
 
+    val generatedPoints: LiveData<Map<Point, Boolean>>
+        get() = _generatedPoints
+
     val firstAlgorithmOutput: LiveData<Point>
         get() = _firstAlgorithmOutput
 
     val secondAlgorithmOutput: LiveData<Point>
         get() = _secondAlgorithmOutput
 
+    private val _generatedPoints = MutableLiveData<Map<Point, Boolean>>()
     private val _firstAlgorithmOutput = MutableLiveData<Point>()
     private val _secondAlgorithmOutput = MutableLiveData<Point>()
 
@@ -47,7 +51,12 @@ class MainViewModel(
         }
 
     fun generatePoints() {
-        TODO()
+        colorFillerInteractor.generatePoints(imageSize)
+            .subscribeOn(rxSchedulers.computation)
+            .observeOn(rxSchedulers.mainThread)
+            .subscribeLoggingError { points ->
+                _generatedPoints.value = points
+            }
     }
 
     fun updateAlgorithmSpeed(percent: Int) {

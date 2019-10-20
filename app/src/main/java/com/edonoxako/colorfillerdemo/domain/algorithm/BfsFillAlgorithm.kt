@@ -6,6 +6,7 @@ import com.edonoxako.colorfillerdemo.common.top
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.FlowableEmitter
+import io.reactivex.disposables.Disposables
 import java.util.*
 
 class BfsFillAlgorithm(
@@ -24,12 +25,17 @@ class BfsFillAlgorithm(
     }
 
     private fun createSource(emitter: FlowableEmitter<Point>) {
+        emitter.setDisposable(
+            Disposables.fromAction { queue.clear() }
+        )
+
         while (queue.isNotEmpty()) {
             val point = queue.removeLast()
             point.neighbourPoints.forEach(::tryToPush)
             points[point] = fillValue
             emitter.onNext(point)
         }
+
         emitter.onComplete()
     }
 
