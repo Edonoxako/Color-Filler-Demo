@@ -16,8 +16,8 @@
         android:entries="@array/mock_algorithm_names"
         android:spinnerMode="dropdown" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <com.edonoxako.colorfillerdemo.presentation.ui.PointsRenderingView
+        android:id="@+id/view_points_rendering"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_launcher_background"

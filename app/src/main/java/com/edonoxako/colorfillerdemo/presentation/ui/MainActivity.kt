@@ -48,23 +48,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpFirstColorFillerView() {
         with(filler_view_first) {
+            selectedAlgorithm = viewModel.firstAlgorithmName
             algorithmChangedListener = { algorithmName ->
                 viewModel.firstAlgorithmName = algorithmName
             }
             tapListener = viewModel::start
             viewModel.firstAlgorithmOutput.observe(this@MainActivity, this::addPoint)
-            viewModel.generatedPoints.observe(this@MainActivity, this::addAllPoints)
+            viewModel.generatedPoints.observe(this@MainActivity) { points ->
+                addAllPoints(viewModel.imageSize, points)
+            }
         }
     }
 
     private fun setUpSecondColorFillerView() {
         with(filler_view_second) {
+            selectedAlgorithm = viewModel.secondAlgorithmName
             algorithmChangedListener = { algorithmName ->
                 viewModel.secondAlgorithmName = algorithmName
             }
             tapListener = viewModel::start
             viewModel.secondAlgorithmOutput.observe(this@MainActivity, this::addPoint)
-            viewModel.generatedPoints.observe(this@MainActivity, this::addAllPoints)
+            viewModel.generatedPoints.observe(this@MainActivity) { points ->
+                addAllPoints(viewModel.imageSize, points)
+            }
         }
     }
 }
