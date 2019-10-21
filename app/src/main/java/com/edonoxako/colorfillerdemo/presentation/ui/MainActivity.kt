@@ -8,12 +8,15 @@ import androidx.lifecycle.observe
 import com.edonoxako.colorfillerdemo.R
 import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
 import com.edonoxako.colorfillerdemo.presentation.viewmodel.MainViewModel
+import com.edonoxako.colorfillerdemo.presentation.viewmodel.MainViewModelFactory
 import com.jakewharton.rxbinding3.widget.changes
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
+import timber.log.Timber.e
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<MainViewModel> { MainViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     private fun setUpSpeedSeekBar() {
         seek_bar_speed.changes()
-            .subscribe(viewModel::updateAlgorithmSpeed)
+            .subscribe(viewModel::updateAlgorithmSpeed, Timber::e)
     }
 
     private fun setUpFirstColorFillerView() {

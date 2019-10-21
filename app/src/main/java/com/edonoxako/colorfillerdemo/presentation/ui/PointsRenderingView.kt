@@ -56,6 +56,7 @@ class PointsRenderingView @JvmOverloads constructor(
         this.mapWidth = size.width
         this.mapHeight = size.height
         this.points = points.toMutableMap()
+        refresh()
     }
 
     fun togglePoint(point: Point) {
