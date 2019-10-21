@@ -7,6 +7,8 @@ import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
 import com.edonoxako.colorfillerdemo.domain.model.Size
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.rxkotlin.zipWith
+import java.util.concurrent.TimeUnit
 
 class ColorFillerInteractor(
     private val fillAlgorithmFactory: FillAlgorithmFactory,
@@ -24,6 +26,7 @@ class ColorFillerInteractor(
         return pointsRepository.getPoints()
             .map { points -> getAlgorithm(algorithmName, points, startingPoint) }
             .flatMapPublisher { it.run() }
+            .zipWith(timer()) { point, _ -> point }
     }
 
     private fun getAlgorithm(
@@ -32,5 +35,9 @@ class ColorFillerInteractor(
         startingPoint: Point
     ): FillAlgorithm {
         return fillAlgorithmFactory.getAlgorithm(algorithmName, points, startingPoint)
+    }
+
+    private fun timer(): Flowable<Long> {
+        return Flowable.interval(1L, TimeUnit.SECONDS)
     }
 }
