@@ -60,8 +60,8 @@ class ColorFillerView @JvmOverloads constructor(
     var tapListener: (tapPoint: Point) -> Unit = {}
         set(value) = view_points_rendering.setOnPointClickListener(value)
 
-    fun addPoint(point: Point) {
-        view_points_rendering.togglePoint(point)
+    fun updatePoints(points: Map<Point, Boolean>) {
+        view_points_rendering.updatePoints(points)
     }
 
     fun addAllPoints(size: Size, points: Map<Point, Boolean>) {

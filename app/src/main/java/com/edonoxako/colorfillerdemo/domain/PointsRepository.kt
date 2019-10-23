@@ -9,4 +9,6 @@ interface PointsRepository {
     fun getPoints(): Single<Map<Point, Boolean>>
 
     fun updatePoints(points: Map<Point, Boolean>): Completable
+
+    fun updatePointsSync(points: Map<Point, Boolean>)
 }

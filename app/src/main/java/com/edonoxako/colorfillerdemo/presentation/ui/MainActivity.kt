@@ -6,13 +6,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import com.edonoxako.colorfillerdemo.R
-import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
 import com.edonoxako.colorfillerdemo.presentation.viewmodel.MainViewModel
 import com.edonoxako.colorfillerdemo.presentation.viewmodel.MainViewModelFactory
 import com.jakewharton.rxbinding3.widget.changes
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
-import timber.log.Timber.e
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     private fun setUpSpeedSeekBar() {
         seek_bar_speed.changes()
+            .debounce(100, TimeUnit.MILLISECONDS)
             .subscribe(viewModel::updateAlgorithmSpeed, Timber::e)
     }
 
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.firstAlgorithmName = algorithmName
             }
             tapListener = viewModel::start
-            viewModel.firstAlgorithmOutput.observe(this@MainActivity, this::addPoint)
+            viewModel.firstAlgorithmOutput.observe(this@MainActivity, this::updatePoints)
             viewModel.generatedPoints.observe(this@MainActivity) { points ->
                 addAllPoints(viewModel.imageSize, points)
             }
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.secondAlgorithmName = algorithmName
             }
             tapListener = viewModel::start
-            viewModel.secondAlgorithmOutput.observe(this@MainActivity, this::addPoint)
+            viewModel.secondAlgorithmOutput.observe(this@MainActivity, this::updatePoints)
             viewModel.generatedPoints.observe(this@MainActivity) { points ->
                 addAllPoints(viewModel.imageSize, points)
             }

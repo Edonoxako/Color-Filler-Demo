@@ -16,7 +16,14 @@ class InMemoryPointsRepository : PointsRepository {
         }
     }
 
+    @Synchronized
+    override fun updatePointsSync(points: Map<Point, Boolean>) {
+        this.points = points
+    }
+
     override fun getPoints(): Single<Map<Point, Boolean>> {
-        return Single.just(points)
+        return Single.defer {
+            Single.just(points)
+        }
     }
 }

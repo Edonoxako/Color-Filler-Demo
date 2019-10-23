@@ -32,10 +32,10 @@ fun <T> Single<T>.subscribeLoggingError(handler: (T) -> Unit): Disposable {
     return subscribe(handler::invoke, Timber::e)
 }
 
-val Point.right get() = Point(x, y.inc())
-val Point.left get() = Point(x, y.dec())
-val Point.top get() = Point(x.inc(), y)
-val Point.bot get() = Point(x.dec(), y)
+val Point.right get() = Point(x.inc(), y)
+val Point.left get() = Point(x.dec(), y)
+val Point.top get() = Point(x, y.dec())
+val Point.bot get() = Point(x, y.inc())
 
 val Point.neighbourPoints get() = listOf(
     top, right, bot, left

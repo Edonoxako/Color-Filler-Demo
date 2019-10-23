@@ -59,10 +59,8 @@ class PointsRenderingView @JvmOverloads constructor(
         refresh()
     }
 
-    fun togglePoint(point: Point) {
-        points?.getValue(point)
-            ?.not()
-            ?.let { points?.set(point, it) }
+    fun updatePoints(points: Map<Point, Boolean>) {
+        this.points = points.toMutableMap()
         refresh()
     }
 

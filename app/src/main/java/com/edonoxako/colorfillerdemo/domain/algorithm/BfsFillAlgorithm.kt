@@ -7,7 +7,10 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.FlowableEmitter
 import io.reactivex.disposables.Disposables
+import io.reactivex.functions.BiConsumer
+import timber.log.Timber
 import java.util.*
+import java.util.concurrent.Callable
 
 class BfsFillAlgorithm(
     private val points: MutableMap<Point, Boolean>,
@@ -17,26 +20,20 @@ class BfsFillAlgorithm(
     private val queue = LinkedList<Point>().apply { push(startingPoint) }
     private val fillValue = !points.getValue(startingPoint)
 
-    override fun run(): Flowable<Point> {
-        return Flowable.create(
-            ::createSource,
-            BackpressureStrategy.BUFFER
+    override fun run(): Flowable<Map<Point, Boolean>> {
+        return Flowable.generate(
+            Callable { queue },
+            BiConsumer { state, emitter ->
+                if (state.isNotEmpty()) {
+                    val point = queue.removeLast()
+                    point.neighbourPoints.forEach(::tryToPush)
+                    points[point] = fillValue
+                    emitter.onNext(points.toMap())
+                } else {
+                    emitter.onComplete()
+                }
+            }
         )
-    }
-
-    private fun createSource(emitter: FlowableEmitter<Point>) {
-        emitter.setDisposable(
-            Disposables.fromAction { queue.clear() }
-        )
-
-        while (queue.isNotEmpty()) {
-            val point = queue.removeLast()
-            point.neighbourPoints.forEach(::tryToPush)
-            points[point] = fillValue
-            emitter.onNext(point)
-        }
-
-        emitter.onComplete()
     }
 
     private fun tryToPush(point: Point) {

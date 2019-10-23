@@ -9,6 +9,7 @@ import com.edonoxako.colorfillerdemo.domain.ColorFillerInteractor
 import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
 import com.edonoxako.colorfillerdemo.domain.model.Size
 import com.edonoxako.colorfillerdemo.common.subscribeLoggingError
+import timber.log.Timber
 
 class MainViewModel(
     private val colorFillerInteractor: ColorFillerInteractor,
@@ -16,21 +17,21 @@ class MainViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        private val DEFAULT_SIZE = Size(100, 100)
+        private val DEFAULT_SIZE = Size(20, 20)
     }
 
     val generatedPoints: LiveData<Map<Point, Boolean>>
         get() = _generatedPoints
 
-    val firstAlgorithmOutput: LiveData<Point>
+    val firstAlgorithmOutput: MutableLiveData<Map<Point, Boolean>>
         get() = _firstAlgorithmOutput
 
-    val secondAlgorithmOutput: LiveData<Point>
+    val secondAlgorithmOutput: MutableLiveData<Map<Point, Boolean>>
         get() = _secondAlgorithmOutput
 
     private val _generatedPoints = MutableLiveData<Map<Point, Boolean>>()
-    private val _firstAlgorithmOutput = MutableLiveData<Point>()
-    private val _secondAlgorithmOutput = MutableLiveData<Point>()
+    private val _firstAlgorithmOutput = MutableLiveData<Map<Point, Boolean>>()
+    private val _secondAlgorithmOutput = MutableLiveData<Map<Point, Boolean>>()
 
     var imageSize = DEFAULT_SIZE
         set(value) {
@@ -51,6 +52,7 @@ class MainViewModel(
         }
 
     fun generatePoints() {
+        dispose()
         colorFillerInteractor.generatePoints(imageSize)
             .subscribeOn(rxSchedulers.computation)
             .observeOn(rxSchedulers.mainThread)
@@ -60,17 +62,18 @@ class MainViewModel(
     }
 
     fun updateAlgorithmSpeed(percent: Int) {
-        TODO()
+        colorFillerInteractor.updateSpeed(percent)
     }
 
     fun start(startingPoint: Point) {
+        Timber.d("Start $startingPoint")
         dispose()
         runAlgorithm(_firstAlgorithmOutput, firstAlgorithmName, startingPoint)
         runAlgorithm(_secondAlgorithmOutput, secondAlgorithmName, startingPoint)
     }
 
     private fun runAlgorithm(
-        outputLiveData: MutableLiveData<Point>,
+        outputLiveData: MutableLiveData<Map<Point, Boolean>>,
         algorithmName: AlgorithmName,
         startingPoint: Point
     ) {
@@ -78,8 +81,8 @@ class MainViewModel(
             colorFillerInteractor.run(algorithmName, startingPoint)
                 .subscribeOn(rxSchedulers.computation)
                 .observeOn(rxSchedulers.mainThread)
-                .subscribeLoggingError { point ->
-                    outputLiveData.value = point
+                .subscribeLoggingError { points ->
+                    outputLiveData.value = points
                 }
         }
     }

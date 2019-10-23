@@ -6,6 +6,7 @@ import com.edonoxako.colorfillerdemo.common.RxSchedulersImpl
 import com.edonoxako.colorfillerdemo.data.InMemoryPointsRepository
 import com.edonoxako.colorfillerdemo.domain.ColorFillerInteractor
 import com.edonoxako.colorfillerdemo.domain.PointsGenerator
+import com.edonoxako.colorfillerdemo.domain.Ticker
 import com.edonoxako.colorfillerdemo.domain.algorithm.FillAlgorithmFactory
 
 class MainViewModelFactory : ViewModelProvider.Factory {
@@ -15,7 +16,8 @@ class MainViewModelFactory : ViewModelProvider.Factory {
             colorFillerInteractor = ColorFillerInteractor(
                 fillAlgorithmFactory = FillAlgorithmFactory(),
                 pointsRepository = InMemoryPointsRepository(),
-                pointsGenerator = PointsGenerator()
+                pointsGenerator = PointsGenerator(),
+                ticker = Ticker()
             ),
             rxSchedulers = RxSchedulersImpl()
         ) as T
