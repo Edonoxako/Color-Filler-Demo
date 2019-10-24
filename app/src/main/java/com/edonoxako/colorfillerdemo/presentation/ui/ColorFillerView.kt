@@ -61,7 +61,7 @@ class ColorFillerView @JvmOverloads constructor(
         set(value) = view_points_rendering.setOnPointClickListener(value)
 
     fun updatePoints() {
-        view_points_rendering.updatePoints()
+        view_points_rendering.refresh()
     }
 
     fun addAllPoints(size: Size, points: Map<Point, Boolean>) {

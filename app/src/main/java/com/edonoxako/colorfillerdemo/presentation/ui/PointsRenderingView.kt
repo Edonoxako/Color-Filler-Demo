@@ -60,10 +60,6 @@ class PointsRenderingView @JvmOverloads constructor(
         refresh()
     }
 
-    fun updatePoints() {
-        refresh()
-    }
-
     fun refresh() = invalidate()
 
     fun setOnPointClickListener(listener: (Point) -> Unit) = setOnTouchListener { _, event ->

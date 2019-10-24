@@ -17,7 +17,7 @@ class MainViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        private val DEFAULT_SIZE = Size(50, 50)
+        private val DEFAULT_SIZE = Size(100, 100)
     }
 
     val firstGeneratedPoints: LiveData<MutableMap<Point, Boolean>>
