@@ -5,14 +5,10 @@ import com.edonoxako.colorfillerdemo.domain.algorithm.FillAlgorithm
 import com.edonoxako.colorfillerdemo.domain.algorithm.FillAlgorithmFactory
 import com.edonoxako.colorfillerdemo.domain.model.AlgorithmName
 import com.edonoxako.colorfillerdemo.domain.model.Size
-import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.zipWith
-import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class ColorFillerInteractor(
     private val fillAlgorithmFactory: FillAlgorithmFactory,
@@ -27,12 +23,16 @@ class ColorFillerInteractor(
             .andThen(pointsRepository.getPoints())
     }
 
-    fun run(algorithmName: AlgorithmName, startingPoint: Point): Flowable<Map<Point, Boolean>> {
-        return pointsRepository.getPoints()
+    fun run(
+        key: String,
+        algorithmName: AlgorithmName,
+        startingPoint: Point
+    ): Flowable<Map<Point, Boolean>> {
+        return pointsRepository.getPointsByKey(key)
             .map { points -> getAlgorithm(algorithmName, points, startingPoint) }
             .flatMapPublisher { it.run() }
             .zipWith(ticker.ticks) { point, _ -> point }
-            .doOnNext(pointsRepository::updatePointsSync)
+            .doOnNext { pointsRepository.updatePointsByKey(key, it) }
     }
 
     private fun getAlgorithm(

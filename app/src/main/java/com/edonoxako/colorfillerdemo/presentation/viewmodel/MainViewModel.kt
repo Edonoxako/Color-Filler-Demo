@@ -72,17 +72,18 @@ class MainViewModel(
     fun start(startingPoint: Point) {
         Timber.d("Start $startingPoint")
         dispose()
-        runAlgorithm(_firstAlgorithmOutput, firstAlgorithmName, startingPoint)
-        runAlgorithm(_secondAlgorithmOutput, secondAlgorithmName, startingPoint)
+        runAlgorithm("first", _firstAlgorithmOutput, firstAlgorithmName, startingPoint)
+        runAlgorithm("second", _secondAlgorithmOutput, secondAlgorithmName, startingPoint)
     }
 
     private fun runAlgorithm(
+        key: String,
         outputLiveData: MutableLiveData<Map<Point, Boolean>>,
         algorithmName: AlgorithmName,
         startingPoint: Point
     ) {
         safeSubscribe {
-            colorFillerInteractor.run(algorithmName, startingPoint)
+            colorFillerInteractor.run(key, algorithmName, startingPoint)
                 .subscribeOn(rxSchedulers.computation)
                 .observeOn(rxSchedulers.mainThread)
                 .subscribeLoggingError { points ->
