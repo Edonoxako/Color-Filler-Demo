@@ -8,6 +8,7 @@ import android.graphics.Point
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.edonoxako.colorfillerdemo.R
 import com.edonoxako.colorfillerdemo.domain.model.Size
 
 class PointsRenderingView @JvmOverloads constructor(
@@ -16,7 +17,7 @@ class PointsRenderingView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val paint = Paint().apply { color = Color.BLACK }
+    private val paint = Paint().apply { color = context.resources.getColor(R.color.colorPrimaryDark) }
 
     private var mapWidth: Int? = null
     private var mapHeight: Int? = null
