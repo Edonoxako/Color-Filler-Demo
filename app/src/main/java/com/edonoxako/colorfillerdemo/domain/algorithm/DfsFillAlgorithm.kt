@@ -7,20 +7,20 @@ import io.reactivex.functions.BiConsumer
 import java.util.*
 import java.util.concurrent.Callable
 
-class BfsFillAlgorithm(
+class DfsFillAlgorithm(
     private val points: MutableMap<Point, Boolean>,
     private val startingPoint: Point
 ) : FillAlgorithm {
 
-    private val queue = LinkedList<Point>().apply { push(startingPoint) }
+    private val stack = LinkedList<Point>().apply { push(startingPoint) }
     private val fillValue = !points.getValue(startingPoint)
 
     override fun run(): Flowable<Map<Point, Boolean>> {
         return Flowable.generate(
-            Callable { queue },
-            BiConsumer { state, emitter ->
-                if (state.isNotEmpty()) {
-                    val point = queue.removeLast()
+            Callable { stack },
+            BiConsumer { _, emitter ->
+                if (stack.isNotEmpty()) {
+                    val point = stack.pop()
                     point.neighbourPoints.forEach(::tryToPush)
                     points[point] = fillValue
                     emitter.onNext(points.toMap())
@@ -32,8 +32,8 @@ class BfsFillAlgorithm(
     }
 
     private fun tryToPush(point: Point) {
-        if (queue.contains(point)) return
+        if (stack.contains(point)) return
         val pointValue = points[point] ?: return
-        if (pointValue != fillValue) queue.push(point)
+        if (pointValue != fillValue) stack.push(point)
     }
 }

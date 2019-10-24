@@ -22,8 +22,6 @@ class InMemoryPointsRepository : PointsRepository {
     }
 
     override fun getPoints(): Single<Map<Point, Boolean>> {
-        return Single.defer {
-            Single.just(points)
-        }
+        return Single.fromCallable { points }
     }
 }

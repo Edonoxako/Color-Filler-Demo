@@ -7,20 +7,21 @@ import io.reactivex.functions.BiConsumer
 import java.util.*
 import java.util.concurrent.Callable
 
-class BfsFillAlgorithm(
+class RandomPickAlgorithm(
     private val points: MutableMap<Point, Boolean>,
     private val startingPoint: Point
 ) : FillAlgorithm {
 
-    private val queue = LinkedList<Point>().apply { push(startingPoint) }
+    private val list = LinkedList<Point>().apply { add(startingPoint) }
     private val fillValue = !points.getValue(startingPoint)
+    private val random = Random(System.currentTimeMillis())
 
     override fun run(): Flowable<Map<Point, Boolean>> {
         return Flowable.generate(
-            Callable { queue },
-            BiConsumer { state, emitter ->
-                if (state.isNotEmpty()) {
-                    val point = queue.removeLast()
+            Callable { list },
+            BiConsumer { _, emitter ->
+                if (list.isNotEmpty()) {
+                    val point = list.removeAt(random.nextInt(list.size))
                     point.neighbourPoints.forEach(::tryToPush)
                     points[point] = fillValue
                     emitter.onNext(points.toMap())
@@ -32,8 +33,8 @@ class BfsFillAlgorithm(
     }
 
     private fun tryToPush(point: Point) {
-        if (queue.contains(point)) return
+        if (list.contains(point)) return
         val pointValue = points[point] ?: return
-        if (pointValue != fillValue) queue.push(point)
+        if (pointValue != fillValue) list.push(point)
     }
 }

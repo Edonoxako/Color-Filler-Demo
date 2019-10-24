@@ -12,7 +12,8 @@ class FillAlgorithmFactory {
     ): FillAlgorithm {
         return when (algorithmName) {
             AlgorithmName.BFS -> BfsFillAlgorithm(points.toMutableMap(), startingPoint)
-            else -> throw RuntimeException("Algorithm $algorithmName is not supported")
+            AlgorithmName.DFS -> DfsFillAlgorithm(points.toMutableMap(), startingPoint)
+            AlgorithmName.RANDOM -> RandomPickAlgorithm(points.toMutableMap(), startingPoint)
         }
     }
 }
