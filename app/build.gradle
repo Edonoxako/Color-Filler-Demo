@@ -5,6 +5,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/eugenemartins/Desktop/my-release-key.keystore')
+            storePassword 'makorra1'
+            keyAlias = 'alias_name'
+            keyPassword 'makorra1'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.edonoxako.colorfillerdemo"
@@ -16,7 +24,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

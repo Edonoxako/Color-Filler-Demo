@@ -17,7 +17,7 @@ class MainViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        private val DEFAULT_SIZE = Size(20, 20)
+        private val DEFAULT_SIZE = Size(50, 50)
     }
 
     val generatedPoints: LiveData<Map<Point, Boolean>>
@@ -50,6 +50,10 @@ class MainViewModel(
             dispose()
             field = value
         }
+
+    init {
+        generatePoints()
+    }
 
     fun generatePoints() {
         dispose()

@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:imeOptions="actionNext"
         android:nextFocusRight="@id/edit_text_height"
         android:textAlignment="center"/>
@@ -27,7 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:inputType="number"
+        android:inputType="numberDecimal"
+        android:imeOptions="actionDone"
         android:textAlignment="center"/>
 
 </LinearLayout>

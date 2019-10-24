@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.edonoxako.colorfillerdemo.R
@@ -37,7 +39,14 @@ class SelectSizePopupDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpEditTextsWithViewModel()
         edit_text_with.showSoftKeyboard()
+        edit_text_height.dismissOnImeDoneAction()
+    }
+
+    private fun setUpEditTextsWithViewModel() {
+        edit_text_with.setText(mainViewModel.imageSize.width.toString())
+        edit_text_height.setText(mainViewModel.imageSize.height.toString())
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -46,11 +55,22 @@ class SelectSizePopupDialog : BottomSheetDialogFragment() {
     }
 
     private fun updateSize() {
-        val width = edit_text_with.text?.toString() ?: "0"
-        val height = edit_text_height.text?.toString() ?: "0"
+        val width = edit_text_with.text?.toString()
+        val height = edit_text_height.text?.toString()
         mainViewModel.imageSize = Size(
-            width = width.toInt(),
-            height = height.toInt()
+            width = width?.toIntOrNull() ?: mainViewModel.imageSize.width,
+            height = height?.toIntOrNull() ?: mainViewModel.imageSize.height
         )
+    }
+
+    private fun EditText.dismissOnImeDoneAction() {
+        setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener if (actionId == EditorInfo.IME_ACTION_DONE) {
+                dismiss()
+                true
+            } else {
+                false
+            }
+        }
     }
 }
