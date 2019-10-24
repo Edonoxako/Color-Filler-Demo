@@ -5,5 +5,5 @@ import io.reactivex.Flowable
 
 interface FillAlgorithm {
 
-    fun run(): Flowable<Map<Point, Boolean>>
+    fun run(): Flowable<Pair<Point, Boolean>>
 }

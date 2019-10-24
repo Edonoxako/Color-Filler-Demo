@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -29,6 +30,10 @@ fun <T> Flowable<T>.subscribeLoggingError(handler: (T) -> Unit): Disposable {
 }
 
 fun <T> Single<T>.subscribeLoggingError(handler: (T) -> Unit): Disposable {
+    return subscribe(handler::invoke, Timber::e)
+}
+
+fun Completable.subscribeLoggingError(handler: () -> Unit): Disposable {
     return subscribe(handler::invoke, Timber::e)
 }
 

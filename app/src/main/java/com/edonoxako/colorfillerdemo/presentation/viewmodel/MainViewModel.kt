@@ -20,18 +20,22 @@ class MainViewModel(
         private val DEFAULT_SIZE = Size(50, 50)
     }
 
-    val generatedPoints: LiveData<Map<Point, Boolean>>
-        get() = _generatedPoints
+    val firstGeneratedPoints: LiveData<MutableMap<Point, Boolean>>
+        get() = _firstGeneratedPoints
 
-    val firstAlgorithmOutput: MutableLiveData<Map<Point, Boolean>>
-        get() = _firstAlgorithmOutput
+    val secondGeneratedPoints: LiveData<MutableMap<Point, Boolean>>
+        get() = _secondGeneratedPoints
 
-    val secondAlgorithmOutput: MutableLiveData<Map<Point, Boolean>>
-        get() = _secondAlgorithmOutput
+    val firstAlgorithmOutput: MutableLiveData<Long>
+        get() = _firstAlgorithmTick
 
-    private val _generatedPoints = MutableLiveData<Map<Point, Boolean>>()
-    private val _firstAlgorithmOutput = MutableLiveData<Map<Point, Boolean>>()
-    private val _secondAlgorithmOutput = MutableLiveData<Map<Point, Boolean>>()
+    val secondAlgorithmOutput: MutableLiveData<Long>
+        get() = _secondAlgorithmTick
+
+    private val _firstGeneratedPoints = MutableLiveData<MutableMap<Point, Boolean>>()
+    private val _secondGeneratedPoints = MutableLiveData<MutableMap<Point, Boolean>>()
+    private val _firstAlgorithmTick = MutableLiveData<Long>()
+    private val _secondAlgorithmTick = MutableLiveData<Long>()
 
     var imageSize = DEFAULT_SIZE
         set(value) {
@@ -61,7 +65,8 @@ class MainViewModel(
             .subscribeOn(rxSchedulers.computation)
             .observeOn(rxSchedulers.mainThread)
             .subscribeLoggingError { points ->
-                _generatedPoints.value = points
+                _firstGeneratedPoints.value = points.toMutableMap()
+                _secondGeneratedPoints.value = points.toMutableMap()
             }
     }
 
@@ -72,22 +77,22 @@ class MainViewModel(
     fun start(startingPoint: Point) {
         Timber.d("Start $startingPoint")
         dispose()
-        runAlgorithm("first", _firstAlgorithmOutput, firstAlgorithmName, startingPoint)
-        runAlgorithm("second", _secondAlgorithmOutput, secondAlgorithmName, startingPoint)
+        runAlgorithm(_firstGeneratedPoints.value!!, _firstAlgorithmTick, firstAlgorithmName, startingPoint)
+        runAlgorithm(_secondGeneratedPoints.value!!, _secondAlgorithmTick, secondAlgorithmName, startingPoint)
     }
 
     private fun runAlgorithm(
-        key: String,
-        outputLiveData: MutableLiveData<Map<Point, Boolean>>,
+        points: MutableMap<Point, Boolean>,
+        tickLiveData: MutableLiveData<Long>,
         algorithmName: AlgorithmName,
         startingPoint: Point
     ) {
         safeSubscribe {
-            colorFillerInteractor.run(key, algorithmName, startingPoint)
+            colorFillerInteractor.run(points, algorithmName, startingPoint)
                 .subscribeOn(rxSchedulers.computation)
                 .observeOn(rxSchedulers.mainThread)
                 .subscribeLoggingError { points ->
-                    outputLiveData.value = points
+                    tickLiveData.value = points
                 }
         }
     }

@@ -16,7 +16,7 @@ class RandomPickAlgorithm(
     private val fillValue = !points.getValue(startingPoint)
     private val random = Random(System.currentTimeMillis())
 
-    override fun run(): Flowable<Map<Point, Boolean>> {
+    override fun run(): Flowable<Pair<Point, Boolean>> {
         return Flowable.generate(
             Callable { list },
             BiConsumer { _, emitter ->
@@ -24,7 +24,7 @@ class RandomPickAlgorithm(
                     val point = list.removeAt(random.nextInt(list.size))
                     point.neighbourPoints.forEach(::tryToPush)
                     points[point] = fillValue
-                    emitter.onNext(points.toMap())
+                    emitter.onNext(point to fillValue)
                 } else {
                     emitter.onComplete()
                 }

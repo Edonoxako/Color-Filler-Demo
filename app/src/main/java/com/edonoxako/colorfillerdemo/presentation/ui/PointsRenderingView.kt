@@ -20,7 +20,7 @@ class PointsRenderingView @JvmOverloads constructor(
 
     private var mapWidth: Int? = null
     private var mapHeight: Int? = null
-    private var points: MutableMap<Point, Boolean>? = null
+    private var points: Map<Point, Boolean>? = null
 
     private val isInitialized: Boolean
         get() = mapWidth != null && mapHeight != null && points != null
@@ -55,12 +55,11 @@ class PointsRenderingView @JvmOverloads constructor(
     fun init(size: Size, points: Map<Point, Boolean>) {
         this.mapWidth = size.width
         this.mapHeight = size.height
-        this.points = points.toMutableMap()
+        this.points = points
         refresh()
     }
 
-    fun updatePoints(points: Map<Point, Boolean>) {
-        this.points = points.toMutableMap()
+    fun updatePoints() {
         refresh()
     }
 

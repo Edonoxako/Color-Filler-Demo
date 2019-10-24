@@ -3,7 +3,6 @@ package com.edonoxako.colorfillerdemo.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.edonoxako.colorfillerdemo.common.RxSchedulersImpl
-import com.edonoxako.colorfillerdemo.data.InMemoryPointsRepository
 import com.edonoxako.colorfillerdemo.domain.ColorFillerInteractor
 import com.edonoxako.colorfillerdemo.domain.PointsGenerator
 import com.edonoxako.colorfillerdemo.domain.Ticker
@@ -15,7 +14,6 @@ class MainViewModelFactory : ViewModelProvider.Factory {
         return MainViewModel(
             colorFillerInteractor = ColorFillerInteractor(
                 fillAlgorithmFactory = FillAlgorithmFactory(),
-                pointsRepository = InMemoryPointsRepository(),
                 pointsGenerator = PointsGenerator(),
                 ticker = Ticker()
             ),

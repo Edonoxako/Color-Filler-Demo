@@ -15,7 +15,7 @@ class DfsFillAlgorithm(
     private val stack = LinkedList<Point>().apply { push(startingPoint) }
     private val fillValue = !points.getValue(startingPoint)
 
-    override fun run(): Flowable<Map<Point, Boolean>> {
+    override fun run(): Flowable<Pair<Point, Boolean>> {
         return Flowable.generate(
             Callable { stack },
             BiConsumer { _, emitter ->
@@ -23,7 +23,7 @@ class DfsFillAlgorithm(
                     val point = stack.pop()
                     point.neighbourPoints.forEach(::tryToPush)
                     points[point] = fillValue
-                    emitter.onNext(points.toMap())
+                    emitter.onNext(point to fillValue)
                 } else {
                     emitter.onComplete()
                 }

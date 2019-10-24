@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
                 viewModel.firstAlgorithmName = algorithmName
             }
             tapListener = viewModel::start
-            viewModel.firstAlgorithmOutput.observe(this@MainActivity, this::updatePoints)
-            viewModel.generatedPoints.observe(this@MainActivity) { points ->
+            viewModel.firstAlgorithmOutput.observe(this@MainActivity) { updatePoints() }
+            viewModel.firstGeneratedPoints.observe(this@MainActivity) { points ->
                 addAllPoints(viewModel.imageSize, points)
             }
         }
@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity() {
                 viewModel.secondAlgorithmName = algorithmName
             }
             tapListener = viewModel::start
-            viewModel.secondAlgorithmOutput.observe(this@MainActivity, this::updatePoints)
-            viewModel.generatedPoints.observe(this@MainActivity) { points ->
+            viewModel.secondAlgorithmOutput.observe(this@MainActivity) { updatePoints() }
+            viewModel.secondGeneratedPoints.observe(this@MainActivity) { points ->
                 addAllPoints(viewModel.imageSize, points)
             }
         }

@@ -7,7 +7,7 @@ class FillAlgorithmFactory {
 
     fun getAlgorithm(
         algorithmName: AlgorithmName,
-        points: Map<Point, Boolean>,
+        points: MutableMap<Point, Boolean>,
         startingPoint: Point
     ): FillAlgorithm {
         return when (algorithmName) {
