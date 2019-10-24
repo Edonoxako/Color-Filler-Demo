@@ -9,8 +9,7 @@ import java.util.concurrent.TimeUnit
 class Ticker {
 
     companion object {
-        private const val MAX_SPEED = 500L
-        private const val MIN_SPEED = 10L
+        private const val ONE_SECOND_IN_MILLIS = 1000L
     }
 
     val ticks: Flowable<Long>
@@ -25,6 +24,9 @@ class Ticker {
         ticksSubject.onNext(calculateRealSpeed(speed))
     }
 
-    private fun calculateRealSpeed(speed: Int) =
-        MIN_SPEED + (MAX_SPEED - (speed * 0.01 * MAX_SPEED)).toLong()
+    private fun calculateRealSpeed(speed: Int) = if (speed == 0) {
+        ONE_SECOND_IN_MILLIS
+    } else {
+        ONE_SECOND_IN_MILLIS / speed
+    }
 }
