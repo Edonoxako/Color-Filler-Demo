@@ -24,13 +24,10 @@ class ColorFillerInteractor(
         points: MutableMap<Point, Boolean>,
         algorithmName: AlgorithmName,
         startingPoint: Point
-    ): Flowable<Long> {
+    ): Flowable<Pair<Point, Boolean>> {
         return Single.fromCallable { getAlgorithm(algorithmName, points, startingPoint) }
             .flatMapPublisher { it.run() }
-            .zipWith(ticker.ticks) { point, tick ->
-                points[point.first] = point.second
-                return@zipWith tick
-            }
+            .zipWith(ticker.ticks) { point, _ -> point}
     }
 
     private fun getAlgorithm(

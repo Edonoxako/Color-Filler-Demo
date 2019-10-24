@@ -45,13 +45,13 @@ class MainViewModel(
 
     var firstAlgorithmName = AlgorithmName.BFS
         set(value) {
-            dispose()
+            if (field != value) dispose()
             field = value
         }
 
     var secondAlgorithmName = AlgorithmName.DFS
         set(value) {
-            dispose()
+            if (field != value) dispose()
             field = value
         }
 
@@ -61,13 +61,15 @@ class MainViewModel(
 
     fun generatePoints() {
         dispose()
-        colorFillerInteractor.generatePoints(imageSize)
-            .subscribeOn(rxSchedulers.computation)
-            .observeOn(rxSchedulers.mainThread)
-            .subscribeLoggingError { points ->
-                _firstGeneratedPoints.value = points.toMutableMap()
-                _secondGeneratedPoints.value = points.toMutableMap()
-            }
+        safeSubscribe {
+            colorFillerInteractor.generatePoints(imageSize)
+                .subscribeOn(rxSchedulers.computation)
+                .observeOn(rxSchedulers.mainThread)
+                .subscribeLoggingError { points ->
+                    _firstGeneratedPoints.value = points.toMutableMap()
+                    _secondGeneratedPoints.value = points.toMutableMap()
+                }
+        }
     }
 
     fun updateAlgorithmSpeed(percent: Int) {
@@ -91,8 +93,10 @@ class MainViewModel(
             colorFillerInteractor.run(points, algorithmName, startingPoint)
                 .subscribeOn(rxSchedulers.computation)
                 .observeOn(rxSchedulers.mainThread)
-                .subscribeLoggingError { points ->
-                    tickLiveData.value = points
+                .subscribeLoggingError { pointAndFillValue ->
+                    val (point, fillValue) = pointAndFillValue
+                    points[point] = fillValue
+                    tickLiveData.value = 0L
                 }
         }
     }
